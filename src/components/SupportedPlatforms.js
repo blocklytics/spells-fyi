@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Material UI
-import { Avatar, Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 

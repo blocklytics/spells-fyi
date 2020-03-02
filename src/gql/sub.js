@@ -1,8 +1,6 @@
-import { useCallback } from 'react';
 import { gql } from 'apollo-boost';
 
 export const spells = () => {
-    // const timestamp = Date.now() / 1000
     return gql`
     {
         future:txes(
@@ -23,9 +21,10 @@ export const spells = () => {
                 cancelledAtTransaction
                 executedAtTimestamp
                 executedAtTransaction
+                value
                 signature
                 data
-                # target
+                target { id }
                 timelock {
                     id
                     platform { id }
@@ -49,9 +48,10 @@ export const spells = () => {
             cancelledAtTransaction
             executedAtTimestamp
             executedAtTransaction
+            value
             signature
             data
-            # target
+            target { id }
             timelock {
                 id
                 platform { id }

@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 // Apollo
 import { useQuery } from '@apollo/react-hooks';
 
 // Material UI
-import { Divider, Grid, IconButton, Link, Paper, Typography } from '@material-ui/core';
+import { Divider, Grid, Link, Paper, Typography } from '@material-ui/core';
 import { OpenInNew } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -52,9 +52,9 @@ function useInterval(callback, delay) {
     }, [delay]);
   }
 
-function sliceAddress(address) {
-    return `${address.slice(0,6)}...${address.slice(-4)}`
-}
+// function sliceAddress(address) {
+//     return `${address.slice(0,6)}...${address.slice(-4)}`
+// }
 
 // function convertWei(tokenAddress, amount) {
 //     const decimals = 18
@@ -67,16 +67,16 @@ const Moment = ({timestamp}) => {
     return moment(parseInt(timestamp) * 1000).format('LLL')
 }
 
-const MomentTimeAgo = ({ id, timestamp }) => {
-    const momentObject = moment(parseInt(timestamp) * 1000)
-    const [fromNow, setFromNow] = useState(momentObject.fromNow())
+// const MomentTimeAgo = ({ id, timestamp }) => {
+//     const momentObject = moment(parseInt(timestamp) * 1000)
+//     const [fromNow, setFromNow] = useState(momentObject.fromNow())
 
-    useInterval(() => {
-        setFromNow(momentObject.fromNow())
-    }, 1000)
+//     useInterval(() => {
+//         setFromNow(momentObject.fromNow())
+//     }, 1000)
 
-    return fromNow
-}
+//     return fromNow
+// }
 
 const Row = ({label, content, smallContent}) => {
     const classes = useStyles();
@@ -94,14 +94,14 @@ const Row = ({label, content, smallContent}) => {
 
 const etherscanUrlForTx = tx => `https://etherscan.io/tx/${tx}`
 
-const breakData = str => {
-    var chunks = [];
-    for (var i = 0, charsLength = str.length; i < charsLength; i += 40) {
-        chunks.push(str.substring(i, i + 40));
-    }
-    console.log(chunks)
-    return chunks.join('\n')
-}
+// const breakData = str => {
+//     var chunks = [];
+//     for (var i = 0, charsLength = str.length; i < charsLength; i += 40) {
+//         chunks.push(str.substring(i, i + 40));
+//     }
+//     console.log(chunks)
+//     return chunks.join('\n')
+// }
 
 const Content = ({ data }) => {
     const classes = useStyles();
@@ -122,6 +122,7 @@ const Content = ({ data }) => {
         isCancelled
     }, idx) => {
         const platform = timelock.platform.id
+        const targetId = target.id
         return (
             <Paper elevation={6}>
                 <Grid container direction="row" justify="flex-start" alignItems="flex-start" spacing={2}>
@@ -135,7 +136,7 @@ const Content = ({ data }) => {
                 )}
                 <Row label="Cast" content={<Link href={etherscanUrlForTx(createdAtTransaction)}><Moment id={idx} timestamp={createdAtTimestamp} /> <OpenInNew fontSize="small" /></Link>} />
                 <Divider className={classes.rowSmall} />
-                <Row label="Target" content={ target } smallContent />
+                <Row label="Target" content={ targetId } smallContent />
                 <Row label="Value" content={ value } smallContent />
                 <Row label="Signature" content={ signature } smallContent />
                 <Row label="Data" content={ data } smallContent />
