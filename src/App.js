@@ -123,6 +123,12 @@ const theme = createMuiTheme({
 
       }
     },
+    MuiChip: {
+      label: {
+        paddingRight: '0px',
+        paddingLeft: '0px',
+      },
+    },
     MuiAvatar: {
       root: {
         backgroundColor: 'transparent',
@@ -139,9 +145,6 @@ const theme = createMuiTheme({
       },
     },
     MuiIconButton: {
-      label: {
-        // color: 'rgba(0, 0, 0, 1.0)',
-      },
       sizeSmall: {
         width: 24,
         height: 24,

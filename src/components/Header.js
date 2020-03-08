@@ -1,39 +1,80 @@
 import React from 'react';
 
-import { Avatar, Grid, Typography } from '@material-ui/core';
+// Material UI
+import { Chip, Grid, Link, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import pink from '@material-ui/core/colors/pink'
 
 import Blocky from '../images/fire.png'
 
 const useStyles = makeStyles(theme => ({
     topBar: {
-      marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(9),
-      marginRight: theme.spacing(2),
-      padding: theme.spacing(4)
+      marginBottom: theme.spacing(2),
+      padding: theme.spacing(2)
     },
-    large: {
-      width: theme.spacing(12),
-      height: theme.spacing(12),
-      boxShadow: 'none',
+    logo: {
+      height: 60,
+    },
+    logoText: {
+      fontFamily: 'Roboto',
+      fontWeight: 900,
+      fontSize: '3rem',
+      color: 'rgba(0,0,0,1)',
+      letterSpacing: '-0.05625rem',
+    },
+    fyiTag: {
+      background: pink['500'],
+      color: 'rgba(255, 255, 255, 0.87)',
+      border: '1px solid rgba(255, 255, 255, 0.87)',
+      borderRadius: 2,
+      height: 20,
+      marginTop: -22,
+      marginLeft: -9,
+      width: 30,
     },
   }));
 
 export const Header = () => {
     const classes = useStyles();
     return (
-        <Grid className="topBar"
-            container 
-            direction="row" 
-            alignItems="center" 
-            justify="flex-start">
-            <Grid item>
-                <Avatar src={ Blocky } variant="square" elevation={0} className={classes.large} />
-            </Grid>
-            <Grid item>
-                <Typography variant="h1">Spells.fyi</Typography>
-            </Grid>
+      <Grid className={classes.topBar}
+          container 
+          direction="row" 
+          alignItems="center" 
+          justify="space-between"
+      >
+      <Grid item>
+        <Grid
+          container
+          direction="row"
+          justify="flex-start"
+          alignItems="center"
+          wrap="nowrap"
+        >
+          <img src={ Blocky } className={classes.logo} alt="Blocklytics" />
+          <Typography className={classes.logoText}>Spells</Typography>
+          <Chip label=".fyi" className={classes.fyiTag} />
         </Grid>
+      </Grid>
+      <Grid item>
+        <Grid container direction="row" alignItems="center" justify="flex-end" spacing={4}>
+          <Grid item>
+            <Typography>
+            <Link href="https://github.com/blocklytics/spells-fyi" target="_blank">Code</Link>
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Link href="https://thegraph.com/explorer/subgraph/blocklytics/spells" target="_blank">Data</Link>
+          </Grid>
+          {/* <Grid item>
+            <Link>Bounties</Link>
+          </Grid> */}
+          <Grid item>
+            <Link href="https://discordapp.com/invite/GFxFN3K" target="_blank">Chat</Link>
+          </Grid>
+        </Grid>
+      </Grid>
+      </Grid>
     )
 }
 
