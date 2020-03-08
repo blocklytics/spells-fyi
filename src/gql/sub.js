@@ -3,7 +3,7 @@ import { gql } from 'apollo-boost';
 export const spells = () => {
     return gql`
     {
-        future:txes(
+        future:spells(
                 # first: 5, 
                 orderBy: eta, 
                 orderDirection: asc,
@@ -32,7 +32,7 @@ export const spells = () => {
                 isCancelled
                 isExecuted
             }
-        past:txes(
+        past:spells(
             first: 10, 
             orderBy: executedAtTimestamp, 
             orderDirection: desc,
