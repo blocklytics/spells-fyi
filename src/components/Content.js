@@ -85,8 +85,8 @@ const Row = ({label, content, smallContent}) => {
             <Grid item>
                 <Typography variant={smallContent ? "body2" : "body1" } className={classes.rowLabel}>{ label }</Typography>
             </Grid>
-            <Grid item nowrap>
-                <Typography variant={smallContent ? "body2" : "body1" }>{ content }</Typography>
+            <Grid item zeroMinWidth>
+                <Typography variant={smallContent ? "body2" : "body1" } noWrap>{ content }</Typography>
             </Grid>
         </Grid>
     )
@@ -127,8 +127,9 @@ const Content = ({ data }) => {
             <Paper elevation={6}>
                 <Grid container direction="row" justify="flex-start" alignItems="flex-start" spacing={2}>
                     <Grid item><PlatformAvatar large platform={platform} /></Grid>
-                    <Grid item><Typography paragraph variant="h3">{platform} {signature} Spell</Typography></Grid>
+                    <Grid item><Typography paragraph variant="h3">{platform}</Typography></Grid>
                 </Grid>
+                <Typography paragraph variant="h3">{signature} Spell</Typography>
                 { isExecuted ? (
                     <Row label="Executed" content={<Link href={etherscanUrlForTx(executedAtTransaction)}><Moment id={idx} timestamp={executedAtTimestamp} /> <OpenInNew fontSize="small" /></Link>} />
                 ) : (
@@ -160,12 +161,12 @@ const GridLayout = () => {
 
     return (
         <Grid container direction="row" spacing={2}>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
                 <Typography variant="h2" align="center" paragraph className={classes.sectionHeader}>Timelocked</Typography>
                 <Typography variant="h6" align="center" paragraph className={classes.sectionSubheader}>This list of spells cannot be executed before the ETA.</Typography>
                 <Content data={data && data.future} />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
                 <Typography variant="h2" align="center" paragraph className={classes.sectionHeader}>Executed</Typography>
                 <Typography variant="h6" align="center" paragraph className={classes.sectionSubheader}>This list of spells has already been executed.</Typography>
                 <Content data={data && data.past} />
