@@ -131,11 +131,11 @@ const Content = ({ data }) => {
                 </Grid>
                 <Typography paragraph variant="h3">{signature} Spell</Typography>
                 { isExecuted ? (
-                    <Row label="Executed" content={<Link href={etherscanUrlForTx(executedAtTransaction)}><Moment id={idx} timestamp={executedAtTimestamp} /> <OpenInNew fontSize="small" /></Link>} />
+                    <Row label="Executed" content={<Link href={etherscanUrlForTx(executedAtTransaction)} target="_blank"><Moment id={idx} timestamp={executedAtTimestamp} /> <OpenInNew fontSize="small" /></Link>} />
                 ) : (
                     <Row label="ETA" content={<Moment id={idx} timestamp={eta} />} />
                 )}
-                <Row label="Cast" content={<Link href={etherscanUrlForTx(createdAtTransaction)}><Moment id={idx} timestamp={createdAtTimestamp} /> <OpenInNew fontSize="small" /></Link>} />
+                <Row label="Cast" content={<Link href={etherscanUrlForTx(createdAtTransaction)} target="_blank"><Moment id={idx} timestamp={createdAtTimestamp} /> <OpenInNew fontSize="small" /></Link>} />
                 <Divider className={classes.rowSmall} />
                 <Row label="Target" content={ targetId } smallContent />
                 <Row label="Value" content={ value } smallContent />
