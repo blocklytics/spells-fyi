@@ -107,15 +107,18 @@ const Content = ({ data }) => {
     const classes = useStyles();
     if (!data) return null
 
-    return data.map(({ 
+    return data.map(({
+        id,
         createdAtTransaction,
         createdAtTimestamp,
         executedAtTimestamp,
         executedAtTransaction,
         eta,
         value,
+        functionName,
         signature,
         data,
+        description,
         target,
         timelock,
         isExecuted,
@@ -124,12 +127,12 @@ const Content = ({ data }) => {
         const platform = timelock.platform.id
         const targetId = target.id
         return (
-            <Paper elevation={6}>
+            <Paper elevation={6} key={id}>
                 <Grid container direction="row" justify="flex-start" alignItems="flex-start" spacing={2}>
                     <Grid item><PlatformAvatar large platform={platform} /></Grid>
                     <Grid item><Typography paragraph variant="h3">{platform}</Typography></Grid>
                 </Grid>
-                <Typography paragraph variant="h3">{signature} Spell</Typography>
+                <Typography paragraph variant="h3">{description || functionName || signature} Spell</Typography>
                 { isExecuted ? (
                     <Row label="Executed" content={<Link href={etherscanUrlForTx(executedAtTransaction)} target="_blank"><Moment id={idx} timestamp={executedAtTimestamp} /> <OpenInNew fontSize="small" /></Link>} />
                 ) : (
@@ -139,7 +142,7 @@ const Content = ({ data }) => {
                 <Divider className={classes.rowSmall} />
                 <Row label="Target" content={ targetId } smallContent />
                 <Row label="Value" content={ value } smallContent />
-                <Row label="Signature" content={ signature } smallContent />
+                <Row label="Function" content={ functionName || signature } smallContent />
                 <Row label="Data" content={ data } smallContent />
             </Paper>
         )
