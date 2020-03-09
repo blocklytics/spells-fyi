@@ -133,7 +133,7 @@ const Content = ({ data }) => {
                 { isExecuted ? (
                     <Row label="Executed" content={<Link href={etherscanUrlForTx(executedAtTransaction)} target="_blank"><Moment id={idx} timestamp={executedAtTimestamp} /> <OpenInNew fontSize="small" /></Link>} />
                 ) : (
-                    <Row label="ETA" content={<Moment id={idx} timestamp={eta} />} />
+                    <Row label="Timelock ends" content={eta === "0" ? "To be determined" : <Moment id={idx} timestamp={eta} />} />
                 )}
                 <Row label="Cast" content={<Link href={etherscanUrlForTx(createdAtTransaction)} target="_blank"><Moment id={idx} timestamp={createdAtTimestamp} /> <OpenInNew fontSize="small" /></Link>} />
                 <Divider className={classes.rowSmall} />
@@ -163,7 +163,7 @@ const GridLayout = () => {
         <Grid container direction="row" spacing={2}>
             <Grid item xs={12} sm={6}>
                 <Typography variant="h2" align="center" paragraph className={classes.sectionHeader}>Timelocked</Typography>
-                <Typography variant="h6" align="center" paragraph className={classes.sectionSubheader}>This list of spells cannot be executed before the ETA.</Typography>
+                <Typography variant="h6" align="center" paragraph className={classes.sectionSubheader}>This list of spells cannot be executed before the timelock ends.</Typography>
                 <Content data={data && data.future} />
             </Grid>
             <Grid item xs={12} sm={6}>
