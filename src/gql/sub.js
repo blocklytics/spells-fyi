@@ -10,11 +10,13 @@ export const spells = () => {
                 where:{
                     isCancelled: false,
                     isExecuted: false,
-                    eta_gt: "1583041442" # TODO - dynamic
+                    # eta_gt: "1583041442" # TODO - dynamic
+                    # expiresAtTimestamp_lte: "1583041442" # TODO - dynamic
                 }
             ) {
                 id
                 eta
+                description
                 createdAtTimestamp
                 createdAtTransaction
                 cancelledAtTimestamp
@@ -22,6 +24,7 @@ export const spells = () => {
                 executedAtTimestamp
                 executedAtTransaction
                 value
+                functionName
                 signature
                 data
                 target { id }
@@ -33,15 +36,16 @@ export const spells = () => {
                 isExecuted
             }
         past:spells(
-            first: 10, 
+            first: 100, 
             orderBy: executedAtTimestamp, 
             orderDirection: desc,
-            where:{
-                isExecuted: true
-            }
+            # where:{
+            #     isExecuted: true
+            # }
         ) {
             id
             eta
+            description
             createdAtTimestamp
             createdAtTransaction
             cancelledAtTimestamp
@@ -49,6 +53,7 @@ export const spells = () => {
             executedAtTimestamp
             executedAtTransaction
             value
+            functionName
             signature
             data
             target { id }
