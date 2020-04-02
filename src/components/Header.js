@@ -70,6 +70,9 @@ export const Header = () => {
             <Link>Bounties</Link>
           </Grid> */}
           <Grid item>
+            <Link href="https://twitter.com/spellsfyi" target="_blank">Twitter</Link>
+          </Grid>
+          <Grid item>
             <Link href="https://discordapp.com/invite/GFxFN3K" target="_blank">Chat</Link>
           </Grid>
         </Grid>
