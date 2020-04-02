@@ -27,7 +27,10 @@ export const spells = () => {
                 functionName
                 signature
                 data
-                target { id }
+                target { 
+                    id 
+                    name
+                }
                 timelock {
                     id
                     platform { id }
@@ -56,7 +59,10 @@ export const spells = () => {
             functionName
             signature
             data
-            target { id }
+            target { 
+                id 
+                name
+            }
             timelock {
                 id
                 platform { id }
