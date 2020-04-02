@@ -5,7 +5,7 @@ import { Chip, Grid, Link, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import pink from '@material-ui/core/colors/pink'
 
-import Blocky from '../images/fire.png'
+import Blocky from '../images/fireball.png'
 
 const useStyles = makeStyles(theme => ({
     topBar: {
@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
       padding: theme.spacing(2)
     },
     logo: {
-      height: 60,
+      height: 90,
     },
     logoText: {
       fontFamily: 'Roboto',
