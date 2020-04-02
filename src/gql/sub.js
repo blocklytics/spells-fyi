@@ -6,7 +6,7 @@ export const spells = () => {
         future:spells(
                 # first: 5, 
                 orderBy: eta, 
-                orderDirection: asc,
+                orderDirection: desc,
                 where:{
                     isCancelled: false,
                     isExecuted: false,
@@ -23,6 +23,7 @@ export const spells = () => {
                 cancelledAtTransaction
                 executedAtTimestamp
                 executedAtTransaction
+                expiresAtTimestamp
                 value
                 functionName
                 signature
@@ -55,6 +56,7 @@ export const spells = () => {
             cancelledAtTransaction
             executedAtTimestamp
             executedAtTransaction
+            expiresAtTimestamp
             value
             functionName
             signature
