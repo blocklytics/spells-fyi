@@ -52,9 +52,9 @@ function useInterval(callback, delay) {
     }, [delay]);
   }
 
-// function sliceAddress(address) {
-//     return `${address.slice(0,6)}...${address.slice(-4)}`
-// }
+function sliceAddress(address) {
+    return `${address.slice(0,6)}...${address.slice(-4)}`
+}
 
 // function convertWei(tokenAddress, amount) {
 //     const decimals = 18
@@ -94,6 +94,8 @@ const Row = ({label, content, smallContent}) => {
 
 const etherscanUrlForTx = tx => `https://etherscan.io/tx/${tx}`
 
+const etherscanUrlForAddress = address => `https://etherscan.io/address/${address}`
+
 // const breakData = str => {
 //     var chunks = [];
 //     for (var i = 0, charsLength = str.length; i < charsLength; i += 40) {
@@ -125,6 +127,7 @@ const Content = ({ data }) => {
         isCancelled
     }, idx) => {
         const platform = timelock.platform.id
+        const targetName = target.name ? target.name : sliceAddress(target.id)
         const targetId = target.id
         return (
             <Paper elevation={6} key={id}>
@@ -140,7 +143,7 @@ const Content = ({ data }) => {
                 )}
                 <Row label="Cast" content={<Link href={etherscanUrlForTx(createdAtTransaction)} target="_blank"><Moment id={idx} timestamp={createdAtTimestamp} /> <OpenInNew fontSize="small" /></Link>} />
                 <Divider className={classes.rowSmall} />
-                <Row label="Target" content={ targetId } smallContent />
+                <Row label="Target" content={ <Link href={etherscanUrlForAddress(targetId)} target="_blank">{targetName}</Link> } smallContent />
                 <Row label="Value" content={ value } smallContent />
                 <Row label="Function" content={ functionName || signature } smallContent />
                 <Row label="Data" content={ data } smallContent />
