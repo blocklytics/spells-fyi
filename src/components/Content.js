@@ -115,6 +115,7 @@ const Content = ({ data }) => {
         createdAtTimestamp,
         executedAtTimestamp,
         executedAtTransaction,
+        expiresAtTimestamp,
         eta,
         value,
         functionName,
@@ -126,9 +127,15 @@ const Content = ({ data }) => {
         isExecuted,
         isCancelled
     }, idx) => {
+        //Hide expired spells which were not executed
+        const now = Date.now() / 1000 // Convert to seconds
+        const isExpired = now > expiresAtTimestamp && expiresAtTimestamp !== "0"
+        if (isExpired && !isExecuted) return null
+
         const platform = timelock.platform.id
         const targetName = target.name ? target.name : sliceAddress(target.id)
         const targetId = target.id
+
         return (
             <Paper elevation={6} key={id}>
                 <Grid container direction="row" justify="flex-start" alignItems="flex-start" spacing={2}>
