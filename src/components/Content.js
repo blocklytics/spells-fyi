@@ -127,10 +127,10 @@ const Content = ({ data }) => {
         isExecuted,
         isCancelled
     }, idx) => {
-        //Hide expired spells
+        //Hide expired spells which were not executed
         const now = Date.now() / 1000 // Convert to seconds
         const isExpired = now > expiresAtTimestamp && expiresAtTimestamp !== "0"
-        if (isExpired) return null
+        if (isExpired && !isExecuted) return null
 
         const platform = timelock.platform.id
         const targetName = target.name ? target.name : sliceAddress(target.id)
