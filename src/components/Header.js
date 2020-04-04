@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Material UI
-import { Chip, Grid, Link, Typography } from '@material-ui/core';
+import { Button, Chip, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import pink from '@material-ui/core/colors/pink'
 
@@ -57,23 +57,21 @@ export const Header = () => {
         </Grid>
       </Grid>
       <Grid item>
-        <Grid container direction="row" alignItems="center" justify="flex-end" spacing={4}>
+        <Grid container direction="row" alignItems="center" justify="flex-end" spacing={2}>
           <Grid item>
-            <Typography>
-            <Link href="https://github.com/blocklytics/spells-fyi" target="_blank">Code</Link>
-            </Typography>
+            <Button color="primary" href="https://github.com/blocklytics/spells-fyi" target="_blank">GitHub</Button>
           </Grid>
           <Grid item>
-            <Link href="https://thegraph.com/explorer/subgraph/blocklytics/spells" target="_blank">Data</Link>
+            <Button color="primary" href="https://thegraph.com/explorer/subgraph/blocklytics/spells" target="_blank">Subgraph</Button>
           </Grid>
           {/* <Grid item>
-            <Link>Bounties</Link>
+            <Button color="primary">Bounties</Link>
           </Grid> */}
           <Grid item>
-            <Link href="https://twitter.com/spellsfyi" target="_blank">Twitter</Link>
+            <Button color="primary" href="https://twitter.com/spellsfyi" target="_blank">Twitter</Button>
           </Grid>
           <Grid item>
-            <Link href="https://discordapp.com/invite/GFxFN3K" target="_blank">Chat</Link>
+            <Button color="primary" href="https://discordapp.com/invite/GFxFN3K" target="_blank">Discord</Button>
           </Grid>
         </Grid>
       </Grid>

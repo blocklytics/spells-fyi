@@ -1,100 +1,39 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 
 // Apollo
 import { useQuery } from '@apollo/react-hooks';
 
 // Material UI
-import { Divider, Grid, Link, Paper, Typography } from '@material-ui/core';
-import { OpenInNew } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/core/styles';
+import { Button, Grid, Paper, Typography, CircularProgress } from '@material-ui/core';
 
 import moment from 'moment';
-
 import { PlatformAvatar } from './PlatformAvatar';
 import { spells } from '../gql/sub';
+import { useInterval, sliceAddress, Moment, etherscanUrlForTx, etherscanUrlForAddress } from './helpers';
 
-const useStyles = makeStyles(theme => ({
-    row: {
-        marginTop: theme.spacing(1)
-    },
-    rowSmall: {
-        marginTop: theme.spacing(0.5)
-    },
-    rowLabel: {
-        color: 'rgba(0,0,0,0.6)',
-    },
-    sectionHeader: {
-        marginBottom: theme.spacing(2),
-    },
-    sectionSubheader: {
-        color: 'rgba(0,0,0,0.4)',
-        marginBottom: theme.spacing(9),
-    },
-  }));
+const SpellCounter = ({ text, timestamp }) => {
+    const momentObject = moment(parseInt(timestamp) * 1000)
+    const [fromNow, setFromNow] = useState(momentObject.fromNow())
 
-function useInterval(callback, delay) {
-    const savedCallback = useRef();
-  
-    // Remember the latest callback.
-    useEffect(() => {
-      savedCallback.current = callback;
-    }, [callback]);
-  
-    // Set up the interval.
-    useEffect(() => {
-      function tick() {
-        savedCallback.current();
-      }
-      if (delay !== null) {
-        let id = setInterval(tick, delay);
-        return () => clearInterval(id);
-      }
-    }, [delay]);
-  }
+    useInterval(() => {
+        setFromNow(momentObject.fromNow())
+    }, 1000)
 
-function sliceAddress(address) {
-    return `${address.slice(0,6)}...${address.slice(-4)}`
+    return text + fromNow
 }
 
-// function convertWei(tokenAddress, amount) {
-//     const decimals = 18
-//     const wei = utils.bigNumberify(amount)
-//     // TODO - get actual decimals for tokenAddress
-//     return parseFloat(utils.formatUnits(wei, decimals)).toLocaleString([], ({minimumFractionDigits: 4, maximumFractionDigits: 4}))
-// }
-
-const Moment = ({timestamp}) => {
-    return moment(parseInt(timestamp) * 1000).format('LLL')
-}
-
-// const MomentTimeAgo = ({ id, timestamp }) => {
-//     const momentObject = moment(parseInt(timestamp) * 1000)
-//     const [fromNow, setFromNow] = useState(momentObject.fromNow())
-
-//     useInterval(() => {
-//         setFromNow(momentObject.fromNow())
-//     }, 1000)
-
-//     return fromNow
-// }
-
-const Row = ({label, content, smallContent}) => {
-    const classes = useStyles();
+const Row = ({label, content}) => {
     return (
-        <Grid container direction="row" justify="space-between" className={smallContent ? classes.rowSmall : classes.row }>
-            <Grid item>
-                <Typography variant={smallContent ? "body2" : "body1" } className={classes.rowLabel}>{ label }</Typography>
+        <Grid container direction="row" justify="space-between" alignItems="center" style={{ marginTop: 8, marginBottom: 8, minHeight: 36 }}>
+            <Grid xs item>
+                <Typography variant="body1" color="textSecondary">{ label }</Typography>
             </Grid>
             <Grid item zeroMinWidth>
-                <Typography variant={smallContent ? "body2" : "body1" } noWrap>{ content }</Typography>
+                <Typography variant="body1" noWrap>{ content }</Typography>
             </Grid>
         </Grid>
     )
 }
-
-const etherscanUrlForTx = tx => `https://etherscan.io/tx/${tx}`
-
-const etherscanUrlForAddress = address => `https://etherscan.io/address/${address}`
 
 // const breakData = str => {
 //     var chunks = [];
@@ -105,11 +44,14 @@ const etherscanUrlForAddress = address => `https://etherscan.io/address/${addres
 //     return chunks.join('\n')
 // }
 
-const Content = ({ data }) => {
-    const classes = useStyles();
-    if (!data) return null
+const Content = ({ data, loading }) => {
+    if (loading) return (
+        <Paper elevation={0}>
+            <CircularProgress />
+        </Paper>
+    )
 
-    return data.map(({
+    return data && data.map(({
         id,
         createdAtTransaction,
         createdAtTimestamp,
@@ -117,7 +59,6 @@ const Content = ({ data }) => {
         executedAtTransaction,
         expiresAtTimestamp,
         eta,
-        value,
         functionName,
         signature,
         data,
@@ -128,32 +69,57 @@ const Content = ({ data }) => {
         isCancelled
     }, idx) => {
         //Hide expired spells which were not executed
-        const now = Date.now() / 1000 // Convert to seconds
-        const isExpired = now > expiresAtTimestamp && expiresAtTimestamp !== "0"
+        const now_seconds = Date.now() / 1000
+        const isExpired = now_seconds > expiresAtTimestamp && expiresAtTimestamp !== "0"
         if (isExpired && !isExecuted) return null
 
         const platform = timelock.platform.id
-        const targetName = target.name ? target.name : sliceAddress(target.id)
         const targetId = target.id
+        const targetName = target.name ? target.name : sliceAddress(targetId)
+
+        let spellTitle = description || functionName || signature
+        if (spellTitle === functionName) {
+            spellTitle = spellTitle.replace(/^_*/, '') // Remove starting underscores
+            spellTitle = spellTitle.replace(/\(.*\)/, '') // Remove function arguments
+            spellTitle = spellTitle.replace(/([a-z0-9])([A-Z])/g, '$1 $2') // Convert camel case
+            spellTitle = spellTitle.charAt(0).toUpperCase() + spellTitle.slice(1)
+        }
+        if (spellTitle.substring(spellTitle.length-5).toLowerCase() !== "spell") {
+            spellTitle += " Spell"
+        }
+
+        let spellCounter, executionRow;
+        if (isExecuted) {
+            spellCounter = <SpellCounter text=" • Executed " timestamp={executedAtTimestamp} />
+            executionRow = <Row label="Executed" content={<Button href={etherscanUrlForTx(executedAtTransaction)} target="_blank" variant="text" color="primary"><Moment id={idx} timestamp={executedAtTimestamp} /></Button>} />
+        }
+        else if (eta > 0) {
+            if (eta > now_seconds) {
+                spellCounter = <SpellCounter text=" • Unlocks " timestamp={eta} />
+                executionRow = <Row label="Timelock ends" content={<Moment timestamp={eta} />} />
+            }
+            else {
+                spellCounter = <SpellCounter text=" • Unlocked " timestamp={eta} />
+                executionRow = <Row label="Timelock ended" content={<Moment timestamp={eta} />} />
+            }
+        } else {
+            executionRow = <Row label="Timelock ends" content="Scheduling tbd" />
+        }
 
         return (
-            <Paper elevation={6} key={id}>
+            <Paper elevation={0} key={id}>
                 <Grid container direction="row" justify="flex-start" alignItems="flex-start" spacing={2}>
                     <Grid item><PlatformAvatar large platform={platform} /></Grid>
-                    <Grid item><Typography paragraph variant="h3">{platform}</Typography></Grid>
+                    <Grid item xs container direction="column" spacing={0}>
+                        <Grid item><Typography variant="h4" color="textSecondary">{platform}{spellCounter}</Typography></Grid>
+                        <Grid item><Typography paragraph variant="h3">{spellTitle}</Typography></Grid>
+                    </Grid>
                 </Grid>
-                <Typography paragraph variant="h3">{description || functionName || signature} Spell</Typography>
-                { isExecuted ? (
-                    <Row label="Executed" content={<Link href={etherscanUrlForTx(executedAtTransaction)} target="_blank"><Moment id={idx} timestamp={executedAtTimestamp} /> <OpenInNew fontSize="small" /></Link>} />
-                ) : (
-                    <Row label="Timelock ends" content={eta === "0" ? "To be determined" : <Moment id={idx} timestamp={eta} />} />
-                )}
-                <Row label="Cast" content={<Link href={etherscanUrlForTx(createdAtTransaction)} target="_blank"><Moment id={idx} timestamp={createdAtTimestamp} /> <OpenInNew fontSize="small" /></Link>} />
-                <Divider className={classes.rowSmall} />
-                <Row label="Target" content={ <Link href={etherscanUrlForAddress(targetId)} target="_blank">{targetName}</Link> } smallContent />
-                <Row label="Value" content={ value } smallContent />
-                <Row label="Function" content={ functionName || signature } smallContent />
-                <Row label="Data" content={ data } smallContent />
+                {executionRow}
+                <Row label="Cast" content={<Button href={etherscanUrlForTx(createdAtTransaction)} target="_blank" variant="text" color="primary"><Moment id={idx} timestamp={createdAtTimestamp} /></Button>} />
+                <Row label="Target" content={ <Button href={etherscanUrlForAddress(targetId)} target="_blank" variant="text" color="primary">{targetName}</Button> } />
+                <Row label="Function" content={ functionName || signature } />
+                <Row label="Data" content={ data } />
             </Paper>
         )
     })
@@ -165,24 +131,20 @@ const GridLayout = () => {
     //    - for http: useQuery
     //    - for ws: useSubscription
     */
-
-    
-    const classes = useStyles();
     const { loading, error, data } = useQuery(spells())
-    console.log(loading, data)
     if (error) console.log(error)
 
     return (
         <Grid container direction="row" spacing={2}>
             <Grid item xs={12} sm={6}>
-                <Typography variant="h2" align="center" paragraph className={classes.sectionHeader}>Timelocked</Typography>
-                <Typography variant="h6" align="center" paragraph className={classes.sectionSubheader}>This list of spells cannot be executed before the timelock ends.</Typography>
-                <Content data={data && data.future} />
+                <Typography variant="h2" align="center" color="textPrimary" paragraph>Timelocked</Typography>
+                <Typography variant="h6" align="center" color="textSecondary" paragraph>This list of spells cannot be executed before the timelock ends.</Typography>
+                <Content data={data && data.future} loading={loading} />
             </Grid>
             <Grid item xs={12} sm={6}>
-                <Typography variant="h2" align="center" paragraph className={classes.sectionHeader}>Executed</Typography>
-                <Typography variant="h6" align="center" paragraph className={classes.sectionSubheader}>This list of spells has already been executed.</Typography>
-                <Content data={data && data.past} />
+                <Typography variant="h2" align="center" paragraph>Executed</Typography>
+                <Typography variant="h6" align="center" color="textSecondary" paragraph>This list of spells has already been executed.</Typography>
+                <Content data={data && data.past} loading={loading} />
             </Grid>
         </Grid>
     )

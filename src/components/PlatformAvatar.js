@@ -2,7 +2,7 @@
 import React from 'react';
 
 // Material UI
-import { Avatar } from '@material-ui/core';
+import { Avatar, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 // Platform images
@@ -16,28 +16,16 @@ const useStyles = makeStyles(theme => ({
     small: {
       width: theme.spacing(6),
       height: theme.spacing(6),
-    },
-    large: {
-      width: theme.spacing(9),
-      height: theme.spacing(9),
-      marginTop: -theme.spacing(4),
       boxShadow: theme.shadows[4],
     },
-    row: {
-        marginBottom: theme.spacing(1)
-    },
-    rowSmall: {
-        marginBottom: theme.spacing(0.5)
-    },
-    rowLabel: {
-        color: 'rgba(0,0,0,0.52)',
-    },
-    sectionHeader: {
-        marginBottom: theme.spacing(9),
+    large: {
+      width: theme.spacing(6),
+      height: theme.spacing(6),
+      boxShadow: theme.shadows[4],
     },
   }));
 
-export const PlatformAvatar = ({ platform, large, children, ...props }) => {
+export const PlatformAvatar = ({ platform, large, children, tooltip, props }) => {
     const classes = useStyles();
     let imgSrc = null
     if (platform === "Compound") imgSrc = Compound
@@ -45,5 +33,6 @@ export const PlatformAvatar = ({ platform, large, children, ...props }) => {
     if (platform === "DDEX") imgSrc = DDEX
     if (platform === "Dharma") imgSrc = Dharma
     if (platform === "Maker") imgSrc = Maker
-    return <Avatar src={imgSrc} className={ large ? classes.large : classes.small} {...props}>{children}</Avatar>
+    let avatar = <Avatar src={imgSrc} className={ large ? classes.large : classes.small} {...props}>{children}</Avatar>
+    return tooltip ? <Tooltip title={platform} arrow>{ avatar }</Tooltip> : avatar
 }

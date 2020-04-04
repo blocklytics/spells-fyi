@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 
 // Apollo
 import { ApolloProvider } from '@apollo/react-hooks';
@@ -51,28 +50,29 @@ const client = new ApolloClient({
 });
 
 // MUI Theme
-
-const defaultTheme = createMuiTheme()
-
 const theme = createMuiTheme({
   palette: {
-    secondary: {
-      main: 'rgba(0, 0, 0, 0.87)',
-    },
     primary: {
       main: pink['500'],
-      light: '#ffffff',
+    },
+    secondary: {
+      main: '#632894',
     },
     background: {
-      default: '#FFFFFF',
+      default: '#FFFAFF',
+      paper: '#ffffff',
     },
+    text: {
+      primary: 'rgba(0, 0, 0, 0, 0.87)',
+      secondary: 'rgba(0, 0, 0, 0.435)',
+    }
   },
   shadows: [
     'none',
     '0px 2px 1px -1px rgba(0,0,0,0.1),0px 1px 1px 0px rgba(0,0,0,0.07),0px 1px 3px 0px rgba(0,0,0,0.06)',
     '0px 3px 1px -2px rgba(0,0,0,0.1),0px 2px 2px 0px rgba(0,0,0,0.07),0px 1px 5px 0px rgba(0,0,0,0.06)',
     '0px 3px 3px -2px rgba(0,0,0,0.1),0px 3px 4px 0px rgba(0,0,0,0.07),0px 1px 8px 0px rgba(0,0,0,0.06)',
-    '0px 2px 4px -1px rgba(0,0,0,0.1),0px 4px 5px 0px rgba(0,0,0,0.07),0px 1px 10px 0px rgba(0,0,0,0.06)',
+    '1px 1px 10px 0px rgba(0,0,0,0.06)', // Used for Platform Avatar
     '0px 3px 5px -1px rgba(0,0,0,0.1),0px 5px 8px 0px rgba(0,0,0,0.07),0px 1px 14px 0px rgba(0,0,0,0.06)',
     '0px 3px 5px -1px rgba(0,0,0,0.1),0px 6px 10px 0px rgba(0,0,0,0.07),0px 1px 18px 0px rgba(0,0,0,0.06)',
     '0px 4px 5px -2px rgba(0,0,0,0.1),0px 7px 10px 1px rgba(0,0,0,0.07),0px 2px 16px 1px rgba(0,0,0,0.06)',
@@ -100,27 +100,40 @@ const theme = createMuiTheme({
         fontWeight: 900,
         fontSize: '3rem',
       },
-      h2: {
+      h2: { // Section title
         fontWeight: 700,
-        fontSize: '2.25rem',
+        fontSize: '3rem',
+        letterSpacing: -0.78,
       },
-      h3: {
-        fontWeight: 700,
-        fontSize: '2rem',
-        lineHeight: 1.5,
+      h3: { // Spell title
+        fontWeight: 500,
+        fontSize: '1.625rem',
+        lineHeight: 1.185,
+        letterSpacing: '-0.01rem',
       },
-      subtitle1: {
-        fontWeight: 700,
-        fontSize: '4rem',
-        lineHeight: 1.1,
+      h4: { // Overline
+        fontWeight: 500,
+        fontSize: '0.75rem',
+        lineHeight: 1.25,
+        letterSpacing: '0.06rem',
+        textTransform: 'uppercase',
+      },
+      h6: { // Section subtitle
+        fontWeight: 400,
+        fontSize: '1.25rem',
+        lineHeight: 1.4,
+        letterSpacing: '-0.02rem',
+      },
+      subtitle1: { // Site title
+        fontWeight: 900,
+        fontSize: '5rem',
+        lineHeight: 1.125,
         letterSpacing: -2,
-        marginTop: '3.5rem',
         marginBottom: '3rem',
       },
       body2: {
         fontWeight: 500,
         fontSize: '0.625rem',
-
       }
     },
     MuiChip: {
@@ -138,10 +151,16 @@ const theme = createMuiTheme({
     },
     MuiPaper: {
       root: {
-        padding: '1rem',
-        paddingTop: '0.625rem',
+        padding: '1.125rem',
+        paddingTop: '1rem',
         margin: '1rem',
-        marginBottom: '2.125rem',
+        marginTop: '2.125rem',
+      },
+      elevation0: {
+        border: '2px solid rgba(222, 222, 222, 0.6)',
+      },
+      rounded: {
+        borderRadius: 4,
       },
     },
     MuiIconButton: {
@@ -154,11 +173,19 @@ const theme = createMuiTheme({
       root: {
         borderRadius: 2,
         lineHeight: 1.75,
-        '&:hover': {
+        // '&:hover': {
           // borderWidth: 2,
           //         	backgroundColor: '#FFF',
           //       		boxShadow: defaultTheme.shadows[8],
-        },
+        // },
+      },
+      text: {
+        marginRight: -8,
+        fontSize: 'inherit',
+        fontWeight: 'inherit',
+        lineHeight: 'inherit',
+        letterSpacing: 'inherit',
+        textTransform: 'inherit',
       },
     },
   },
