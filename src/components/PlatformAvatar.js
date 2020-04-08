@@ -11,6 +11,7 @@ import Curve from '../images/Curve.jpg'
 import DDEX from '../images/DDEX.png'
 import Dharma from '../images/Dharma.jpg'
 import Maker from '../images/Maker.jpg'
+import DyDx from '../images/DyDx.jpg'
 
 const useStyles = makeStyles(theme => ({
     small: {
@@ -33,6 +34,7 @@ export const PlatformAvatar = ({ platform, large, children, tooltip, props }) =>
     if (platform === "DDEX") imgSrc = DDEX
     if (platform === "Dharma") imgSrc = Dharma
     if (platform === "Maker") imgSrc = Maker
+    if (platform === "DyDx") imgSrc = DyDx
     let avatar = <Avatar src={imgSrc} className={ large ? classes.large : classes.small} {...props}>{children}</Avatar>
     return tooltip ? <Tooltip title={platform} arrow>{ avatar }</Tooltip> : avatar
 }

@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { PlatformAvatar } from './PlatformAvatar';
 
 const platforms = [
-    'Maker', 'Compound', 'Dharma', 'DDEX', 'Curve'
+    'Maker', 'Compound', 'Dharma', 'DDEX', 'Curve', 'DyDx'
 ]
 
 const useStyles = makeStyles(theme => ({

@@ -17,7 +17,7 @@
 .env.development.local
 .env.test.local
 .env.production.local
-staging.yaml
+.yaml
 .gcloudignore
 
 npm-debug.log*
