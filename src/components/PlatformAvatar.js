@@ -24,9 +24,15 @@ const useStyles = makeStyles(theme => ({
       height: theme.spacing(6),
       boxShadow: theme.shadows[4],
     },
+    unhighlighted: {
+      opacity: 0.2,
+    },
+    clickable: {
+      cursor: "pointer",
+    }
   }));
 
-export const PlatformAvatar = ({ platform, large, children, tooltip, props }) => {
+export const PlatformAvatar = ({ platform, large, children, tooltip, clickable, isUnhighlighted, props }) => {
     const classes = useStyles();
     let imgSrc = null
     if (platform === "Compound") imgSrc = Compound
@@ -35,6 +41,10 @@ export const PlatformAvatar = ({ platform, large, children, tooltip, props }) =>
     if (platform === "Dharma") imgSrc = Dharma
     if (platform === "Maker") imgSrc = Maker
     if (platform === "DyDx") imgSrc = DyDx
-    let avatar = <Avatar src={imgSrc} className={ large ? classes.large : classes.small} {...props}>{children}</Avatar>
+    let avatar = <Avatar src={imgSrc} className={`
+      ${large ? classes.large : classes.small}
+      ${isUnhighlighted && classes.unhighlighted}
+      ${clickable && classes.clickable}
+    `} {...props}>{children}</Avatar>
     return tooltip ? <Tooltip title={platform} arrow>{ avatar }</Tooltip> : avatar
 }

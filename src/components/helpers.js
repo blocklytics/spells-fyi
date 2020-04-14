@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import moment from 'moment';
 
 export function sliceAddress(address) {
@@ -32,3 +32,21 @@ export function useInterval(callback, delay) {
       }
     }, [delay]);
   }
+
+export function getUrlParams() {
+  const queryString = window.location.search;
+  const kvPairs = queryString.substring(1).split('&').map(param => param.split('='));
+
+  return Object.fromEntries(kvPairs);
+}
+
+export function getFilteredPlatforms() {
+  const { platform } = getUrlParams();
+
+  return platform && platform.split(',').map(str => str.toLowerCase());
+}
+
+export const FilteredPlatformsContext = React.createContext({
+  value: [],
+  set: () => {},
+});
