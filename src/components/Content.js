@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 // Apollo
 import { useQuery } from '@apollo/react-hooks';
@@ -9,7 +9,7 @@ import { Button, Grid, Paper, Typography, CircularProgress } from '@material-ui/
 import moment from 'moment';
 import { PlatformAvatar } from './PlatformAvatar';
 import { spells } from '../gql/sub';
-import { useInterval, sliceAddress, Moment, etherscanUrlForTx, etherscanUrlForAddress } from './helpers';
+import { useInterval, sliceAddress, Moment, etherscanUrlForTx, etherscanUrlForAddress, FilteredPlatformsContext } from './helpers';
 
 const SpellCounter = ({ text, timestamp }) => {
     const momentObject = moment(parseInt(timestamp) * 1000)
@@ -45,6 +45,8 @@ const Row = ({label, content}) => {
 // }
 
 const Content = ({ data, loading }) => {
+    const { value: filteredPlatforms } = useContext(FilteredPlatformsContext)
+
     if (loading) return (
         <Paper elevation={0}>
             <CircularProgress />
@@ -68,12 +70,15 @@ const Content = ({ data, loading }) => {
         isExecuted,
         isCancelled
     }, idx) => {
+        // Hide platforms that were not filtered in
+        const platform = timelock.platform.id
+        if (filteredPlatforms && filteredPlatforms.length && !filteredPlatforms.includes(platform.toLowerCase())) return null
+
         //Hide expired spells which were not executed
         const now_seconds = Date.now() / 1000
         const isExpired = now_seconds > expiresAtTimestamp && expiresAtTimestamp !== "0"
         if (isExpired && !isExecuted) return null
 
-        const platform = timelock.platform.id
         const targetId = target.id
         const targetName = target.name ? target.name : sliceAddress(targetId)
 

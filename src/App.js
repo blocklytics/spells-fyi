@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // Apollo
 import { ApolloProvider } from '@apollo/react-hooks';
@@ -17,6 +17,7 @@ import pink from '@material-ui/core/colors/pink'
 import GridLayout from './components/Content';
 import Header from './components/Header';
 import SupportedPlatforms from './components/SupportedPlatforms';
+import { getFilteredPlatforms, FilteredPlatformsContext } from './components/helpers';
 
 // Create an http link:
 const httpLink = new HttpLink({
@@ -193,13 +194,17 @@ const theme = createMuiTheme({
 
 
 function App() {
+  const platforms = getFilteredPlatforms();
+  const [filteredPlatforms, setFilteredPlatforms] = useState(platforms);
   return (
     <MuiThemeProvider theme={theme}>
-      <ApolloProvider client={client}>
-        <Header />
-        <SupportedPlatforms />
-        <GridLayout />
-      </ApolloProvider>
+      <FilteredPlatformsContext.Provider value={{ value: filteredPlatforms, set: setFilteredPlatforms }}>
+        <ApolloProvider client={client}>
+          <Header />
+          <SupportedPlatforms />
+          <GridLayout />
+        </ApolloProvider>
+      </FilteredPlatformsContext.Provider>
     </MuiThemeProvider>
   );
 }
