@@ -59,10 +59,10 @@ export const Header = () => {
       <Grid item>
         <Grid container direction="row" alignItems="center" justify="flex-end" spacing={2}>
           <Grid item>
-            <Button color="primary" href="https://github.com/blocklytics/spells-fyi" target="_blank">GitHub</Button>
+            <Button color="primary" href="https://github.com/blocklytics/spells-fyi" target="_blank">Code</Button>
           </Grid>
           <Grid item>
-            <Button color="primary" href="https://thegraph.com/explorer/subgraph/blocklytics/spells" target="_blank">Subgraph</Button>
+            <Button color="primary" href="https://thegraph.com/explorer/subgraph/blocklytics/spells" target="_blank">Data</Button>
           </Grid>
           {/* <Grid item>
             <Button color="primary">Bounties</Link>
@@ -72,6 +72,9 @@ export const Header = () => {
           </Grid>
           <Grid item>
             <Button color="primary" href="https://discordapp.com/invite/GFxFN3K" target="_blank">Discord</Button>
+          </Grid>
+          <Grid item>
+            <Button color="primary" href="https://gitcoin.co/grants/601/spellsfyi-see-the-future" target="_blank">GitCoin</Button>
           </Grid>
         </Grid>
       </Grid>

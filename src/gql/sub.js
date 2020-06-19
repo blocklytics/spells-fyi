@@ -40,7 +40,7 @@ export const spells = () => {
                 isExecuted
             }
         past:spells(
-            first: 100, 
+            first: 500, 
             orderBy: executedAtTimestamp, 
             orderDirection: desc,
             # where:{

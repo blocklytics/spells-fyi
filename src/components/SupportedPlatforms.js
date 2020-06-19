@@ -13,7 +13,7 @@ const platforms = [
 
 const useStyles = makeStyles(theme => ({
     subtitle: {
-      marginBottom: theme.spacing(9),
+      marginBottom: theme.spacing(2),
       padding: theme.spacing(4)
     },
   }));

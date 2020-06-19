@@ -17,6 +17,7 @@ import pink from '@material-ui/core/colors/pink'
 import GridLayout from './components/Content';
 import Header from './components/Header';
 import SupportedPlatforms from './components/SupportedPlatforms';
+import GitCoin from './components/GitCoin';
 import { getFilteredPlatforms, FilteredPlatformsContext } from './components/helpers';
 
 // Create an http link:
@@ -202,6 +203,7 @@ function App() {
         <ApolloProvider client={client}>
           <Header />
           <SupportedPlatforms />
+          <GitCoin />
           <GridLayout />
         </ApolloProvider>
       </FilteredPlatformsContext.Provider>
