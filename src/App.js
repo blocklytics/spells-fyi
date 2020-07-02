@@ -8,6 +8,7 @@ import { HttpLink } from 'apollo-link-http';
 import { split } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
+import { RestLink } from 'apollo-link-rest';
 
 // Material UI
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
@@ -17,8 +18,10 @@ import pink from '@material-ui/core/colors/pink'
 import GridLayout from './components/Content';
 import Header from './components/Header';
 import SupportedPlatforms from './components/SupportedPlatforms';
+import Contributors from './components/Contributors';
 import GitCoin from './components/GitCoin';
 import { getFilteredPlatforms, FilteredPlatformsContext } from './components/helpers';
+
 
 // Create an http link:
 const httpLink = new HttpLink({
@@ -33,7 +36,7 @@ const wsLink = new WebSocketLink({
   }
 });
 
-const link = split(
+const thegraphLink = split(
   // split based on operation type
   ({ query }) => {
     const definition = getMainDefinition(query);
@@ -46,8 +49,23 @@ const link = split(
   httpLink,
 );
 
+
+// setup your `RestLink` with your endpoint
+const githubLink = new RestLink({
+  uri: "https://api.github.com", headers: {
+    Authorization: `bearer ${
+      process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN
+      }`,
+  }
+});
+
+
 const client = new ApolloClient({
-  link,
+  link: split(
+    operation => operation.getContext().clientName === "github", // Routes the query to the proper client
+    githubLink,
+    thegraphLink
+  ),
   cache: new InMemoryCache()
 });
 
@@ -176,9 +194,9 @@ const theme = createMuiTheme({
         borderRadius: 2,
         lineHeight: 1.75,
         // '&:hover': {
-          // borderWidth: 2,
-          //         	backgroundColor: '#FFF',
-          //       		boxShadow: defaultTheme.shadows[8],
+        // borderWidth: 2,
+        //         	backgroundColor: '#FFF',
+        //       		boxShadow: defaultTheme.shadows[8],
         // },
       },
       text: {
@@ -203,6 +221,7 @@ function App() {
         <ApolloProvider client={client}>
           <Header />
           <SupportedPlatforms />
+          <Contributors />
           <GitCoin />
           <GridLayout />
         </ApolloProvider>
