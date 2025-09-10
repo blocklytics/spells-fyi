@@ -19,7 +19,7 @@
     "qs": "^6.9.4",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
-    "react-scripts": "3.4.0",
+    "react-scripts": "5.0.1",
     "subscriptions-transport-ws": "^0.9.16"
   },
   "scripts": {
